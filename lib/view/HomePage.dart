@@ -10,13 +10,12 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final controller = Get.put(DataController());
-  late String searchKey ;
+  late String searchKey;
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -32,8 +31,10 @@ class HomePage extends StatelessWidget {
             height: 50,
             width: 320,
             child: TextField(
-              decoration: InputDecoration(border: OutlineInputBorder()),
-              onChanged: (Value){
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                  labelText: 'Search Images'),
+              onChanged: (Value) {
                 searchKey = Value;
               },
             ),
@@ -57,29 +58,50 @@ class HomePage extends StatelessWidget {
                       fontSize: width * .04),
                 )),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Obx(() {
             return Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 40,right: 40),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                    itemCount: controller.dataList.length,
-                    itemBuilder: (context, index) {
-                      return FullScreenWidget(
-                        child: SafeArea(
-                          child: Container(
-                            height: 200,
-                            width: 100,
-                            child: Image.network(controller.dataList[index].largeUrl.toString(),height: 200,fit: BoxFit.fitWidth,),
-                          ),
+                padding: const EdgeInsets.only(left: 40, right: 40),
+                child: controller.loading == true
+                    ? SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) => SizedBox(
-    height: 10,
-  )
-                    ),
+                      )
+                    : controller.dataList.length == 0
+                        ? Center(
+                            child: Text(
+                            'No Imge to show',
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ))
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: controller.dataList.length,
+                            itemBuilder: (context, index) {
+                              return FullScreenWidget(
+                                child: SafeArea(
+                                  child: Container(
+                                    height: 200,
+                                    width: 100,
+                                    child: Image.network(
+                                      controller.dataList[index].largeUrl
+                                          .toString(),
+                                      height: 200,
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                  height: 10,
+                                )),
               ),
             );
           }),
