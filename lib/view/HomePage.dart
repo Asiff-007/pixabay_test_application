@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final controller = Get.put(DataController());
-  late String searchKey;
+  String searchKey = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
             height: 50,
             width: 320,
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: OutlineInputBorder(borderSide: BorderSide(width: 2)),
                   labelText: 'Search Images'),
               onChanged: (Value) {
@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
                       fontSize: width * .04),
                 )),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Obx(() {
@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40),
                 child: controller.loading == true
-                    ? SizedBox(
+                    ? const SizedBox(
                         height: 100,
                         width: 100,
                         child: Center(
@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
                         ),
                       )
                     : controller.dataList.length == 0
-                        ? Center(
+                        ? const Center(
                             child: Text(
                             'No Imge to show',
                             style: TextStyle(color: Colors.black, fontSize: 15),
@@ -93,6 +93,14 @@ class HomePage extends StatelessWidget {
                                           .toString(),
                                       height: 200,
                                       fit: BoxFit.fitWidth,
+                                      loadingBuilder: (context,child,loadingProgress){
+                                        if (loadingProgress ==null){
+                                          return child;
+                                        }
+                                        else{
+                                          return Center(child: CircularProgressIndicator());
+                                        }
+                                      },
                                     ),
                                   ),
                                 ),
