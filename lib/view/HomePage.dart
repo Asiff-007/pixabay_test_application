@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:pixabay_test_application/controller/dataController.dart';
@@ -65,10 +66,14 @@ class HomePage extends StatelessWidget {
                   shrinkWrap: true,
                     itemCount: controller.dataList.length,
                     itemBuilder: (context, index) {
-                      return  Container(
-                        height: 200,
-                        width: 100,
-                        child: Image.network(controller.dataList[index].largeUrl.toString(),height: 200,fit: BoxFit.fill,),
+                      return FullScreenWidget(
+                        child: SafeArea(
+                          child: Container(
+                            height: 200,
+                            width: 100,
+                            child: Image.network(controller.dataList[index].largeUrl.toString(),height: 200,fit: BoxFit.fitWidth,),
+                          ),
+                        ),
                       );
                     },
                     separatorBuilder: (context, index) => SizedBox(
